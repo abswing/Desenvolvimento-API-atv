@@ -64,6 +64,23 @@ function pesquisarPorNome(nome) {
     })
 }
 
+
+function marcarLivroDisponivel(livroID) {
+    const livro = buscarPorId(livroID);
+    if (livro) {
+        livro.disponivel = true;
+    }
+    return null;
+}
+
+function marcarLivroIndisponivel(livroID) {
+    const livro = buscarPorId(livroID);
+    if (livro) {
+        livro.disponivel = false;
+    }
+    return null;
+}
+
 module.exports = {
     listar,
     inserir,
@@ -71,5 +88,7 @@ module.exports = {
     atualizar,
     deletar,
     pesquisarPorCategoria,
-    pesquisarPorNome
+    pesquisarPorNome,
+    marcarLivroDisponivel,
+    marcarLivroIndisponivel
 }
