@@ -77,7 +77,8 @@ test('Quando deletar um id existente, deve remover e retornar o dado', () => {
         nome: "O Senhor dos Anéis",
         autor: "J.R.R. Tolkien",
         categoria: "fantasia",
-        id: 1
+        id: 1,
+        disponivel: true
     };
     const quantidadeEsperada = 1;
     resultado = livroRepository.deletar(1);
@@ -103,15 +104,17 @@ test('Quando atualizar um livro existente, deve atualizar na lista e retornar li
         
     });
     const livroAtualizadoEsperado = {
-        nome: "duna",
+        nome: "duna 2",
         autor: "Frank Herbert",
         categoria: "ficção científica",
-        id: 3
+        id: 3,
+        disponivel: true
     };
     resultado = livroRepository.atualizar(3, {
         nome: "duna 2",
         categoria: "ficção científica",
         autor: "Frank Herbert",
+        id:3,
         disponivel: true
     });
     expect(resultado).toEqual(livroAtualizadoEsperado);
@@ -149,23 +152,28 @@ test('Quando atualizar o livro sem categoria, não deve retornar e não atualiza
         expect(livroAtualizado).toEqual(undefined);
         //Não deve inserir na lista o livro errado
         expect(livroRepository.listar()).not.toContainEqual(livroAtualizadoErrado);
-    })
+    });
 
-//Cenário de sucesso - pesquisarPorCategoria
-test('Quando buscar pela categoria alimento, deve retornar pelo menos um livro (senhor dos anéis)', () => {
+test('Quando buscar pela categoria fantasia, deve retornar pelo menos um livro (senhor dos anéis)', () => {
+    livroRepository.inserir({
+        nome: "Senhor dos Anéis",
+        autor: "J.R.R. Tolkien",
+        categoria: "fantasia",
+        disponivel: true
+    });
     const resultado = livroRepository.pesquisarPorCategoria("fantasia");
-    //Podemos testar com o Length > 0:
     expect(resultado.length).toBeGreaterThan(0);
-    //Conter o senhor dos anéis no retorno do indice 0 - esperado porque é o primeiro livro
     expect(resultado[0].nome).toBe("Senhor dos Anéis");
-});
+    });
 
-
-//Cenário de sucesso - pesquisarPorNomeLike
-test('Quando buscar pelo nome "", deve retornar pelo menos um livro (Suco de Laranja)', () => {
+test('Quando buscar pelo nome "suco", deve retornar pelo menos um livro (Suco de Laranja)', () => {
+    livroRepository.inserir({
+        nome: "Suco de Laranja",
+        autor: "Autor Teste",
+        categoria: "bebida",
+        disponivel: true
+    });
     const resultado = livroRepository.pesquisarPorNome("suco");
-    //Podemos testar com o Length > 0:
     expect(resultado.length).toBeGreaterThan(0);
-    //Conter o suco de laranja no retorno do indice 0 - esperado porque é o primeiro livro
     expect(resultado[0].nome).toBe("Suco de Laranja");
 });

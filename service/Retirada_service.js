@@ -2,7 +2,7 @@ const retiradaRepository = require('../repository/Retirada_repository');
 const livroRepository = require('../repository/Livro_repository');
 
 
-function registrarRetirada(clienteID, livroID, dataRetirada) {
+function registrarRetirada(clienteID, livroID) {
     // veerifica se ciente ja tem 3 retiradas ativas
     const retiradasAtivas = retiradaRepository.listarPorCliente(clienteID);
     if (retiradasAtivas.length >= 3) {

@@ -9,7 +9,7 @@ const retiradaRouter = require('./router/Retirada_router');
 const app = express()
 const port = 3000
 
-app.use(express.json()) // for parsing application/json
+app.use(express.json()) 
 
 app.use(loggerMiddleware.realizaLog);
 

@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "test": "jest",
     "start": "node app.js"
   },
+
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -14,3 +16,4 @@
     "jsonwebtoken": "^9.0.2"
   }
 }
+
