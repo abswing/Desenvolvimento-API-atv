@@ -20,8 +20,18 @@ function devolverLivro(req, res) {
     }
 }
 
+function listar(req, res) {
+    try {
+        const retiradas = retiradaRepository.listar();
+        res.json(retiradas);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
 module.exports = {
     registrarRetirada,
-    devolverLivro
-};  
+    devolverLivro,
+    listar
+};
 

@@ -5,6 +5,7 @@ const loginController = require('./controller/login_controller')
 const loggerMiddleware = require('./middleware/logger_middleware')
 const authMiddleware = require('./middleware/auth_middleware')
 const retiradaRouter = require('./router/Retirada_router');
+const clienteRouter = require('./router/Clientes_router');
 
 const app = express()
 const port = 3000
@@ -30,3 +31,5 @@ app.use('/retiradas', retiradaRouter);
 app.listen(port, () => {
   console.log(`API running on port ${port}`)
 })
+
+app.use('/clientes', clienteRouter);
