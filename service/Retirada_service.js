@@ -50,9 +50,14 @@ function devolverLivro(RetiradaId){
     return retirada;
 }
 
+function listar() {
+    return retiradaRepository.listarRetiradas();
+}
+
 module.exports = {
     registrarRetirada,
-    devolverLivro
+    devolverLivro,
+    listar
 };
 
 

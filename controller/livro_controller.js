@@ -44,13 +44,12 @@ function buscarPorId(req, res) {
 }
 
 function atualizar(req, res) {
-
     const id = +req.params.id;
     let livro = req.body;
     try{
         res.json(livroService.atualizar(id, livro));
     } catch(err) {
-        res.status(err.id).json(err);
+        res.status(err.id || 400).json(err);
     }
 }
 

@@ -1,4 +1,5 @@
 const retiradaService = require('../service/Retirada_service');
+const retiradaRepository = require('../repository/Retirada_repository');
 
 function registrarRetirada(req, res) {
     try {
@@ -6,7 +7,7 @@ function registrarRetirada(req, res) {
         const retirada = retiradaService.registrarRetirada(clienteID, livroID);
         res.status(201).json(retirada);
     } catch (error) {
-        res.status(err).json(err);
+        res.status(500).json({ error: error.message });
     }
 }
 
@@ -16,13 +17,13 @@ function devolverLivro(req, res) {
         const retirada = retiradaService.devolverLivro(retiradaID);
         res.status(200).json(retirada);
     } catch (error) {
-        res.status(err).json(err);
+        res.status(500).json({ error: error.message });
     }
 }
 
 function listar(req, res) {
     try {
-        const retiradas = retiradaRepository.listar();
+        const retiradas = retiradaService.listar();
         res.json(retiradas);
     } catch (error) {
         res.status(500).json({ error: error.message });

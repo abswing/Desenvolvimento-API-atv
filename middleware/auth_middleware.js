@@ -8,6 +8,7 @@ function verificarAcesso(req, res, next) {
     try{
         const data = tokenService.validarToken(token);
         console.log("Payload: ", data);
+        console.log("logado");
         next();
     } catch (err) {
         res.status(401).json({id: 401, msg:"Acesso inválido!"})

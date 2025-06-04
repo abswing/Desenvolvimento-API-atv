@@ -19,7 +19,7 @@ function buscarPorId(id) {
 }
 
 function inserir(Livro) {
-    if(!Livro || !Livro.nome || !Livro.autor || !Livro.categoria || !Livro.disponivel == undefined) {
+    if(!Livro || !Livro.nome || !Livro.autor || !Livro.categoria || Livro.disponivel === undefined) {
             return;
     }
 
@@ -33,8 +33,8 @@ function buscarIndicePorId(id) {
 }
 
 function atualizar(id, LivroAtual) {
-    if(!LivroAtual || !LivroAtual.nome || !LivroAtual.autor || !LivroAtual.categoria || !LivroAtual.disponivel== undefined) {
-            return;
+    if(!LivroAtual || !LivroAtual.nome || !LivroAtual.autor || !LivroAtual.categoria || LivroAtual.disponivel === undefined) {
+            return undefined;
     }
 
     let indice = buscarIndicePorId(id);
