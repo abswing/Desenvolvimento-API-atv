@@ -1,32 +1,32 @@
 const retiradaService = require('../service/Retirada_service');
-const retiradaRepository = require('../repository/Retirada_repository');
 
-function registrarRetirada(req, res) {
+async function registrarRetirada(req, res) {
     try {
-        const { clienteID, livroID } = req.body;
-        const retirada = retiradaService.registrarRetirada(clienteID, livroID);
+        const { clienteid, livroid } = req.body;
+        const retirada = await retiradaService.registrarRetirada(clienteid, livroid);
         res.status(201).json(retirada);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 }
 
-function devolverLivro(req, res) {
+async function devolverLivro(req, res) {
     try {
         const { retiradaID } = req.body;
-        const retirada = retiradaService.devolverLivro(retiradaID);
+        const retirada = await retiradaService.devolverLivro(retiradaID);
         res.status(200).json(retirada);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 }
 
-function listar(req, res) {
+async function listar(req, res) {
     try {
-        const retiradas = retiradaService.listar();
-        res.json(retiradas);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.json(await retiradaService.listar());
+    } catch (err) {
+        console.log(err);
+        // Se err.id não estiver definido, assume-se que é um erro interno do servidor
+        res.status(err.id || 500).json(err);
     }
 }
 

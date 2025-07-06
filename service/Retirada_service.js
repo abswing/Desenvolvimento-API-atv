@@ -1,23 +1,23 @@
-const retiradaRepository = require('../repository/Retirada_repository');
-const livroRepository = require('../repository/Livro_repository');
-const clienteRepository = require('../repository/cliente_repository');
+const retiradaRepository = require('../repository/Retirada_repository_bd');
+const livroRepository = require('../repository/Livro_repository_bd');
+const clienteRepository = require('../repository/cliente_repository_bd');
 
-function registrarRetirada(clienteID, livroID) {
-    
-    // Verifica se o cliente existe
-    const cliente = clienteRepository.buscarPorId(clienteID);
+async function registrarRetirada(clienteid, livroid) {
+    console.log("Buscando clienteid:", clienteid);
+    const cliente = await clienteRepository.buscarPorId(clienteid);
+    console.log("Resultado do cliente:", cliente);
     if (!cliente) {
         throw new Error('Cliente não encontrado');
     }
 
     // verifica se ciente ja tem 3 retiradas ativas
-    const retiradasAtivas = retiradaRepository.listarPorCliente(clienteID);
+    const retiradasAtivas = await retiradaRepository.listarPorCliente(clienteid);
     if (retiradasAtivas.length >= 3) {
         throw new Error('Cliente já possui 3 retiradas ativas');
     }
 
     // Verifica se o livro está disponível
-    const livro = livroRepository.buscarPorId(livroID);
+    const livro = await livroRepository.buscarPorId(livroid);
     if (!livro || !livro.disponivel) {
         throw new Error('Livro não disponível para retirada');
     }
@@ -29,22 +29,22 @@ function registrarRetirada(clienteID, livroID) {
     dataDevolucao.setDate(dataRetirada.getDate() + 7);
 
     // Registra a retirada
-    const retirada = retiradaRepository.registrarRetirada({
-        clienteID,
-        livroID,
-        dataRetirada,
-        dataDevolucao
+    const retirada = await retiradaRepository.registrarRetirada({
+        clienteid: clienteid,
+        livroid: livroid,
+        dataretirada: dataRetirada,
+        datadevolucao: dataDevolucao
     });
 
     // Marca o livro como indisponível
-    livroRepository.marcarLivroIndisponivel(livroID);
+    await livroRepository.marcarLivroIndisponivel(livroid);
 
     return retirada;
 }
 
-function devolverLivro(RetiradaId){
+async function devolverLivro(RetiradaId){
     const dataDevolucao = new Date();
-    const retirada = retiradaRepository.devolverLivro(RetiradaId, dataDevolucao);
+    const retirada = await retiradaRepository.devolverLivro(RetiradaId, dataDevolucao);
 
 
     if (!retirada) {
@@ -52,13 +52,13 @@ function devolverLivro(RetiradaId){
     }
 
     // Marca o livro como disponível
-    livroRepository.marcarLivroDisponivel(retirada.livroID);
+    await livroRepository.marcarLivroDisponivel(retirada.livroid);
 
     return retirada;
 }
 
-function listar() {
-    return retiradaRepository.listarRetiradas();
+async function listar() {
+    return await retiradaRepository.listar();
 }
 
 module.exports = {
