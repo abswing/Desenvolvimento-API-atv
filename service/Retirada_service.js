@@ -1,9 +1,16 @@
 const retiradaRepository = require('../repository/Retirada_repository');
 const livroRepository = require('../repository/Livro_repository');
-
+const clienteRepository = require('../repository/cliente_repository');
 
 function registrarRetirada(clienteID, livroID) {
-    // veerifica se ciente ja tem 3 retiradas ativas
+    
+    // Verifica se o cliente existe
+    const cliente = clienteRepository.buscarPorId(clienteID);
+    if (!cliente) {
+        throw new Error('Cliente não encontrado');
+    }
+
+    // verifica se ciente ja tem 3 retiradas ativas
     const retiradasAtivas = retiradaRepository.listarPorCliente(clienteID);
     if (retiradasAtivas.length >= 3) {
         throw new Error('Cliente já possui 3 retiradas ativas');

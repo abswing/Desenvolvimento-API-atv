@@ -1,67 +1,83 @@
 const livroService = require("../service/livro_service")
 
-function listar(req, res) {
-    res.json(livroService.listar());
-    // res.status(200).json(livroService.listar()); //mesma coisa
+async function listar(req, res) {
+    try {
+        res.json(await livroService.listar());
+    } 
+    catch (err) {
+        console.log(err);
+        // Se err.id não estiver definido, assume-se que é um erro interno do servidor
+        res.status(err.id || 500).json(err);
+    }
 }
 
-function inserir (req, res) {
+
+async function inserir(req, res) {
     let livro = req.body;
-    try { 
-        livroService.inserir(livro);
-        res.status(201).json(livro);
-    }
-    catch(err) {
-        res.status(err.id).json(err);
-    }
-}
-
-function pesquisarPorCategoria(req, res) {
-    const categoria = req.params.categoria;
+    console.log("Inserindo livro:", livro);
     try {
-        res.json(livroService.pesquisarPorCategoria(categoria));
-    } catch(err) {
-        res.status(err.id).json(err);
+        const novoLivro = await livroService.inserir(livro);
+        res.status(201).json(novoLivro);
+    } catch (err) {
+        console.log(err);
+        // Se err.id não estiver definido, assume-se que é um erro interno do servidor
+        res.status(err.id || 500).json(err);
     }
 }
 
-function pesquisarPorNome(req, res) {
-    const nome = req.params.nome;
-    try {
-        res.json(livroService.pesquisarPorNome(nome));
-    } catch(err) {
-        res.status(err.id).json(err);
-    }
+// async function pesquisarPorCategoria(req, res) {
+//     const categoria = req.params.categoria;
+//     try {
+//         res.json(await livroService.pesquisarPorCategoria(categoria));
+//     } catch(err) {
+//         res.status(err.id || 500).json(err);
+//     }
+// }
 
-}
-function buscarPorId(req, res) {    
+// async function pesquisarPorNome(req, res) {
+//     const nome = req.params.nome;
+//     try {
+//         res.json(await livroService.pesquisarPorNome(nome));
+//     } catch(err) {
+//         res.status(err.id || 500).json(err);
+//     }
+// }
+
+async function buscarPorId(req, res) {
     const id = +req.params.id;
     try {
-        res.json(livroService.buscarPorId(id));
-    } catch(err) {
-        res.status(err.id).json(err);
+        const livroComId = await livroService.buscarPorId(id);
+        res.json(livroComId);
+    } 
+    catch (err) {
+        res.status(err.id || 500).json(err);
     }
 }
 
-function atualizar(req, res) {
+async function atualizar(req, res) {
+    let livroAtual = req.body;
     const id = +req.params.id;
-    let livro = req.body;
-    try{
-        res.json(livroService.atualizar(id, livro));
-    } catch(err) {
-        res.status(err.id || 400).json(err);
-    }
-}
-
-function deletar(req, res) {
-    const id = +req.params.id;
-    //
     try {
-        res.json(livroService.deletar(id));
-        // res.status(204).send(); //nao retorna nada
-    } catch(err) {
-        res.status(err.id).json(err);
-        // res.status(204).send(); //nao retorna nada
+        const livroAtualizado = await livroService.atualizar(id, livroAtual);
+        res.json(livroAtualizado);
+    } 
+    catch (err) {
+        console.log(err);
+        // Se err.id não estiver definido, assume-se que é um erro interno do servidor
+        res.status(err.id || 500).json(err);
+    }
+}
+
+async function deletar(req, res) {
+    const id = +req.params.id;
+    try {
+        const livroDeletado = await livroService.deletar(id);
+        res.json(livroDeletado);
+    } 
+    catch (err) {
+        console.log(err);
+        // Se err.id não estiver definido, assume-se que é um erro interno do servidor
+        res.status(err.id || 500).json(err);
     }
 }
 
@@ -71,7 +87,6 @@ module.exports = {
     buscarPorId,
     atualizar,
     deletar,
-    pesquisarPorCategoria,
-    pesquisarPorNome
-
+    // pesquisarPorCategoria,
+    // pesquisarPorNome
 }

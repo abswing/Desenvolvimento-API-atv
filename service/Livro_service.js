@@ -1,75 +1,62 @@
-const livroRepository = require('../repository/Livro_repository')
+const livroRepository = require('../repository/Livro_repository_bd');
 
-function listar() {
-    return livroRepository.listar();
+async function listar() {
+    return await livroRepository.listar();
 }
 
-function inserir(livro) {
-    if(livro && livro.nome 
-        && livro.categoria && livro.disponivel !== undefined
-        && livro.autor) {
-            return livroRepository.inserir(livro);
-    }
-    else {
-        throw { id: 400, msg: "Livro sem dados corretos"}
+async function inserir(livro) {
+    if(livro && livro.nome && livro.categoria && livro.disponivel !== undefined && livro.autor) {
+        return await livroRepository.inserir(livro);
+    } else {
+        throw { id: 400, msg: "Livro sem dados corretos" }
     }
 }
 
-function buscarPorId(id) {
-    let livro = livroRepository.buscarPorId(id);
+async function buscarPorId(id) {
+    const livro = await livroRepository.buscarPorId(id);
     if(livro) {
         return livro;
-    }
-    else {
+    } else {
         throw { id: 404, msg: "Livro não encontrado!" }
     }
 }
 
-function pesquisarPorCategoria(categoria) {
-    let livros = livroRepository.pesquisarPorCategoria(categoria);
+async function pesquisarPorCategoria(categoria) {
+    const livros = await livroRepository.pesquisarPorCategoria(categoria);
     if(livros) {
         return livros;
-    }
-    else {
+    } else {
         throw { id: 404, msg: "Nenhum livro encontrado na categoria informada!" }
     }
 }
 
-function pesquisarPorNome(nome) {
-    let livros = livroRepository.pesquisarPorNome(nome);
+async function pesquisarPorNome(nome) {
+    const livros = await livroRepository.pesquisarPorNome(nome);
     if(livros) {
         return livros;
-    }
-    else {
+    } else {
         throw { id: 404, msg: "Nenhum livro encontrado com o nome informado!" }
     }
 }
 
-
-function atualizar(id, livro) {
-    if(livro && livro.nome && livro.categoria 
-        && livro.disponivel !== undefined
-        && livro.autor) {
-            
-        const livroAtualizado = livroRepository.atualizar(id, livro);
+async function atualizar(id, livro) {
+    if(livro && livro.nome && livro.categoria && livro.disponivel !== undefined && livro.autor) {
+        const livroAtualizado = await livroRepository.atualizar(id, livro);
         if(livroAtualizado) {
             return livroAtualizado;
-        }        
-        else {
+        } else {
             throw {id:404, msg: "Livro não encontrado"};
         }
-    }
-    else {
+    } else {
         throw {id:400, msg: "Livro sem dados corretos"};
     }
 }
 
-function deletar(id) {
-    let livro = livroRepository.deletar(id);
+async function deletar(id) {
+    const livro = await livroRepository.deletar(id);
     if(livro) {
         return livro;
-    }
-    else {
+    } else {
         throw { id: 404, msg: "Livro não encontrado!" }
     }
 }

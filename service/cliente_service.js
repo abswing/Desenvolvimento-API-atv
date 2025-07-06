@@ -1,65 +1,77 @@
-const clieteRepository = require('../repository/cliente_repository');
+const clieteRepository = require('../repository/cliente_repository_bd');
 
-function listar() {
-    return clieteRepository.listar();
+async function listar() {
+    try {
+        return await clieteRepository.listar();
+    } catch (error) {
+        throw { id: 500, menssagem: "Erro ao listar clientes!" };
+    }
 }
 
-function buscarPorId(id) {
-    let cliente = clieteRepository.buscarPorId(id);
+async function buscarPorId(id) {
+    let cliente;
+    try {
+        cliente = await clieteRepository.buscarPorId(id);
+    } catch (error) {
+        console.log("erro SQL: ", error);
+        throw { id: 500, menssagem:error.message};
+    }
     if(cliente) {
         return cliente;
-    }
-    else {
-        throw { id: 404, msg: "Cliente não encontrado!" }
+    } else {
+        throw { id: 404, menssagem: "Cliente não encontrado!" };
     }
 }
 
-function inserir(cliente) {
-    let clienteInserido = clieteRepository.inserir(cliente);
-    if(clienteInserido) {
+async function inserir(cliente) {
+    try {
+        let clienteInserido = await clieteRepository.inserir(cliente);
         return clienteInserido;
-    }
-    else {
-        throw { id: 400, msg: "Erro ao inserir cliente!" }
-    }
-}
-
-function atualizar(id, clienteAtual) {
-    let clienteAtualizado = clieteRepository.atualizar(id, clienteAtual);
-    if(clienteAtualizado) {
-        return clienteAtualizado;
-    }
-    else {
-        throw { id: 400, msg: "Erro ao atualizar cliente!" }
+    } catch (error) {
+        console.log("erro SQL: ", error); // <-- Veja o erro real aqui
+        throw { id: 400, menssagem: error.message || "Erro ao inserir cliente!" };
     }
 }
 
-function deletar(id) {
-    let clienteDeletado = clieteRepository.deletar(id);
+async function atualizar(id, clienteAtual) {
+    if(clienteAtual && clienteAtual.nome && clienteAtual.email) {
+        let clienteAtualizado;
+        try {
+            clienteAtualizado = await clieteRepository.atualizar(id, clienteAtual);
+        } catch (error) {
+            throw { id: 400, menssagem: "Erro ao atualizar cliente!" };
+        }
+    }
+}
+
+async function deletar(id) {
+    let clienteDeletado;
+    try {
+        clienteDeletado = await clieteRepository.deletar(id);
+    } catch (error) {
+        throw { id: 500, menssagem: "Erro ao deletar cliente!" };
+    }
     if(clienteDeletado) {
         return clienteDeletado;
-    }
-    else {
-        throw { id: 404, msg: "Cliente não encontrado!" }
+    } else {
+        throw { id: 404, menssagem: "Cliente não encontrado!" };
     }
 }
 
-function pesquisarPorNome(nome){
-    let cliente = clieteRepository.pesquisarPorNome(nome);
+async function pesquisarPorNome(nome){
+    let cliente = await clieteRepository.pesquisarPorNome(nome);
     if(cliente) {
         return cliente;
-    }
-    else {
+    } else {
         throw { id: 404, msg: "Cliente não encontrado!" }
     }
 }
 
-function pesquisarPorEmail(email) {
-    let clientes = clieteRepository.pesquisarPorEmail(email);
+async function pesquisarPorEmail(email) {
+    let clientes = await clieteRepository.pesquisarPorEmail(email);
     if(clientes) {
         return clientes;
-    }
-    else {
+    } else {
         throw { id: 404, msg: "Cliente não encontrado!" }
     }
 }
