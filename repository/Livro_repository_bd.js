@@ -20,16 +20,18 @@ async function listar() {
 
 async function buscarPorId(id) {
     const livro = await bd.connect();
-    const sql = 'SELECT livro.id, livro.nome, livro.autor, livro.categoria, livro.disponivel FROM livro WHERE livro.id = $1'; // minúsculo
+    const sql = 'SELECT * FROM livro WHERE livro.id = $1';
     const value = [id];
     const result = await livro.query(sql, value);
     const livroEncontrado = result.rows[0];
     livro.release();
     if(livroEncontrado) {
         return{
-            id: clienteEncontrado.id,
-            nome: clienteEncontrado.nome,
-            email: clienteEncontrado.email
+            id: livroEncontrado.id,
+            nome: livroEncontrado.nome,
+            autor: livroEncontrado.autor,
+            categoria: livroEncontrado.categoria,
+            disponivel: livroEncontrado.disponivel
         }
     }
     return undefined;

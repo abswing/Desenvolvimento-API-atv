@@ -17,7 +17,7 @@ async function listar() {
 
 async function buscarPorId(id) {
     const Cliente = await bd.connect();
-    const sql = 'SELECT cliente.id, cliente.nome, cliente.email FROM cliente WHERE cliente.id = $1'; // minúsculo
+    const sql = 'SELECT * FROM cliente WHERE cliente.id = $1'; // minúsculo
     const value = [id];
     const result = await Cliente.query(sql, value);
     const clienteEncontrado = result.rows[0];

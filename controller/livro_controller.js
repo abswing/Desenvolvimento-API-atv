@@ -1,4 +1,4 @@
-const livroService = require("../service/livro_service")
+const livroService = require("../service/livro_service");
 
 async function listar(req, res) {
     try {

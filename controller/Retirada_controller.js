@@ -1,6 +1,7 @@
 const retiradaService = require('../service/Retirada_service');
 
 async function registrarRetirada(req, res) {
+    console.log("Requisição recebida no Retirada_controller.js"); // Novo log
     try {
         const { clienteid, livroid } = req.body;
         const retirada = await retiradaService.registrarRetirada(clienteid, livroid);

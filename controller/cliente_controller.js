@@ -1,5 +1,4 @@
 const clienteService = require("../service/cliente_service");
-const clienteRepository = require("../repository/cliente_repository_bd");
 
 async function listar(req, res) {
     try {

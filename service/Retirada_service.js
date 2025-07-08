@@ -3,10 +3,13 @@ const livroRepository = require('../repository/Livro_repository_bd');
 const clienteRepository = require('../repository/cliente_repository_bd');
 
 async function registrarRetirada(clienteid, livroid) {
-    console.log("Buscando clienteid:", clienteid);
+
+    console.log("Registrando retirada para cliente:", clienteid, "e livro:", livroid);
     const cliente = await clienteRepository.buscarPorId(clienteid);
-    console.log("Resultado do cliente:", cliente);
+    console.log("Cliente encontrado:", cliente);
+    // Verifica se o cliente existe
     if (!cliente) {
+        console.log("Resultado do cliente:", cliente);
         throw new Error('Cliente não encontrado');
     }
 
@@ -18,6 +21,7 @@ async function registrarRetirada(clienteid, livroid) {
 
     // Verifica se o livro está disponível
     const livro = await livroRepository.buscarPorId(livroid);
+    console.log("Livro encontrado:", livro);
     if (!livro || !livro.disponivel) {
         throw new Error('Livro não disponível para retirada');
     }

@@ -1,4 +1,4 @@
-const usuarioService = require("../service/usuario_service")
+const usuarioService = require("../service/usuario_service");
 
 function realizarLogin(req, res) {
     let usuario = req.body;

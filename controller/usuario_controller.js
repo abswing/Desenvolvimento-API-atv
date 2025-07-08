@@ -1,4 +1,4 @@
-const usuarioService = require("../service/usuario_service")
+const usuarioService = require("../service/usuario_service");
 
 function listar(req, res) {
     const email = req.query ?req.query.email :undefined; 

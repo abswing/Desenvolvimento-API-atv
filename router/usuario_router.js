@@ -1,7 +1,7 @@
-const express = require('express')
+const express = require('express');
 const router = express.Router();
 
-const usuarioController = require('../controller/usuario_controller')
+const usuarioController = require('../controller/usuario_controller');
 
 //endpoint: /usuarios
 router.get('/', usuarioController.listar)
