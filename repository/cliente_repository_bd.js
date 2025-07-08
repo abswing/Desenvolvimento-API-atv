@@ -21,6 +21,7 @@ async function buscarPorId(id) {
     const value = [id];
     const result = await Cliente.query(sql, value);
     const clienteEncontrado = result.rows[0];
+    console.log("cliente_repository_bd.js - clienteEncontrado:", clienteEncontrado); // Adicionado para depuração
     Cliente.release();
     if(clienteEncontrado) {
         return{
